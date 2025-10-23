@@ -70,19 +70,19 @@ Daily monitoring of key parameters — such as **oil volume**, **water cut**, **
 ## 5. Data Visualization Preview 📈
 
 ### Oil Production Trend
-![Oil Production Trend](plots/production_trend.png)
+![Oil Production Trend](Plots/production_trend.png)
 
-### Decline Curve Analysis
-![Decline Curve](plots/decline_curve.png)
+### Oil Extraction Per Year
+![Decline Curve](Plots/oil_extraction_per_year.png)
 
 ### Water Cut Over Time
-![Water Cut](plots/watercut_trend.png)
+![Water Cut](Plots/watercut_trend.png)
 
 ### Decline Curve Analysis
-![Decline Curve](plots/decline_curve.png)
+![Decline Curve](Plots/decline_curve.png)
 
 ### EOR Analysis
-![Decline Curve](plots/decline_curve.png)
+![Decline Curve](Plots/eor_analysis.png)
 
 ---
 
