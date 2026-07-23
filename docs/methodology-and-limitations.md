@@ -8,7 +8,7 @@
 4. Create derived time fields, gas-oil ratio, water-oil ratio, and cumulative production.
 5. Aggregate daily observations to monthly and annual views.
 6. Evaluate oil-rate, water-cut, pressure, working-hours, and gas behavior.
-7. Fit screening-level decline models and compare their behavior.
+7. Fit exponential and hyperbolic decline curves through December 2020 and compare historical fit statistics.
 8. Translate technical signals into bounded operational recommendations.
 
 ## Dataset Fields
@@ -30,6 +30,8 @@
 - Header line breaks and surrounding spaces were removed.
 - Excel serial dates were converted to ISO `YYYY-MM-DD` dates.
 - The cleaned public file contains 2,939 rows and nine source fields.
+- Dates are unique, with one missing calendar date: 2015-05-31.
+- Oil plus water differs from reported liquid by at most 1 m³/day, consistent with rounded source fields.
 - The notebook uses a relative path so it can run after cloning the repository.
 - Saved notebook outputs were cleared; charts and tables can be reproduced locally.
 
@@ -50,7 +52,7 @@ Therefore:
 - The cause of the 2020-05-11 interruption is not assigned.
 - Economic viability is presented as a recommended analysis, not a concluded result.
 - EOR options are screening candidates, not approved interventions.
-- Decline and reserves calculations are illustrative and require engineering validation.
+- Decline fits describe historical shape only; the notebook deliberately excludes reserves forecasting.
 
 ## Recommended Next Technical Steps
 

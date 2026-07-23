@@ -13,10 +13,12 @@ An evidence-based Python analysis of daily oil production, water cut, reservoir 
 | Oil rate | **49 → 5 m³/day** |
 | Oil-rate decline | **89.8%** |
 | Average oil rate | **17.62 m³/day** |
+| Observed oil volume | **51,798 m³** |
 | Water cut | **29% → 70%** |
 | Average water cut | **70.69%** |
 | Reservoir pressure | **214 → 100 atm** |
 | Pressure decline | **53.3%** |
+| Operating-hours utilization | **93.10%** |
 | Zero-oil observations | **1 day** |
 
 ## Technical Decision Context
@@ -52,11 +54,13 @@ The cleaned file is available at [data/well_807_production_data.csv](data/well_8
 2. Examine daily, monthly, and yearly production behavior.
 3. Calculate gas-oil ratio, water-oil ratio, and cumulative observed production.
 4. Review oil-rate decline, water-cut progression, pressure depletion, and operating hours.
-5. Identify production phases and anomalous observations.
-6. Fit screening-level decline models.
-7. Evaluate operational and intervention questions within explicit evidence limits.
+5. Reconcile liquid balance and identify calendar or operating exceptions.
+6. Fit exponential and hyperbolic curves for historical screening only.
+7. Prioritize operational and intervention questions within explicit evidence limits.
 
 The reproducible [Jupyter notebook](well_807_analysis.ipynb) uses a repository-relative path and contains no saved outputs; run it locally to recreate the analysis.
+
+A concise [portfolio report](docs/well-807-production-analysis-report.pdf) presents the verified findings, charts, and evidence boundaries in a six-page format.
 
 ## Verified Findings
 
@@ -66,6 +70,7 @@ The reproducible [Jupyter notebook](well_807_analysis.ipynb) uses a repository-r
 - This represents an **89.8% reduction** across the observed period.
 - Average daily oil rate across the dataset was **17.62 m³/day**.
 - The annual average fell from **36.63 m³/day in 2013** to **7.59 m³/day in 2020**. The 2021 record is partial and covers only 18 days.
+- Summing the daily observations gives **51,798 m³ of observed oil volume**. This is historical observed production, not a reserves estimate.
 
 ### Water burden
 
@@ -83,8 +88,15 @@ The reproducible [Jupyter notebook](well_807_analysis.ipynb) uses a repository-r
 ### Operational interruption
 
 - Oil production reached **0 m³/day on 2020-05-11**, while eight working hours were recorded.
+- Recorded working hours equal **93.10%** of the theoretical 24-hour daily maximum; 937 observations contain fewer than 24 working hours.
 - The dataset confirms the event but does **not** identify its cause.
 - Maintenance, operating constraints, shutdown activity, or external events require supporting operational records before attribution.
+
+### Data quality
+
+- Dates are unique and ordered, with one missing calendar date: **2015-05-31**.
+- Oil plus water differs from reported total liquid by only 1 m³/day on 464 rows, consistent with rounded source measurements.
+- No missing, duplicate, or negative source values were found.
 
 ## Visual Analysis
 
@@ -92,41 +104,41 @@ The reproducible [Jupyter notebook](well_807_analysis.ipynb) uses a repository-r
 
 ![Oil Production Trend](images/production_trend.png)
 
-### Annual Oil Extraction
+### Annual Production Profile
 
-![Oil Extraction Per Year](images/oil_extraction_per_year.png)
+![Annual Production Profile](images/annual_production_profile.png)
 
-### Water Cut
+### Water Burden
 
 ![Water Cut Trend](images/watercut_trend.png)
 
-### Decline Analysis
+### Decline-Curve Screening
 
 ![Decline Curve Analysis](images/decline_curve.png)
 
-### Intervention Screening
+### Intervention Review Priorities
 
-![EOR Analysis](images/eor_analysis.png)
+![Intervention Review](images/intervention_screening.png)
 
 ## Engineering Interpretation
 
 The history is consistent with a mature, depleted well with a high produced-water burden. The evidence supports a structured technical and economic review; it does not independently prove that the well should be abandoned or that a particular EOR method will succeed.
 
-Screening candidates include:
+Priority review areas include:
 
 1. Artificial-lift and pumping-parameter optimization.
 2. Water-source diagnosis and conformance-control review.
 3. Workover feasibility assessment using intervention history.
 4. Economic-limit analysis including water handling and disposal.
-5. Field-level pressure-support or EOR screening using offset-well and reservoir data.
-6. Abandonment comparison only after estimating remaining value and liability.
+5. Field-level pressure-support or EOR screening only after adding offset-well and reservoir data.
+6. Abandonment comparison only after estimating remaining value, operating cost, and liability.
 
 ## Recommended Next Analysis
 
 - Add failure, shutdown, workover, and intervention records.
 - Separate natural decline from documented downtime.
 - Add price, lifting cost, water-disposal cost, and intervention cost.
-- Test decline models on engineering-selected stable-production periods.
+- Test decline models on engineering-selected stable-production periods and documented operating states.
 - Compare the well with field injection and offset-well response.
 - Validate any EOR candidate against rock, fluid, pressure, and simulation data.
 
@@ -144,7 +156,7 @@ These files document calculations, evidence boundaries, and the distinction betw
 - Time-series analysis
 - Data cleaning and validation
 - Production-performance analysis
-- Decline-curve screening
+- Decline-curve screening without reserves claims
 - Water-cut and pressure analysis
 - Petroleum-engineering interpretation
 - Evidence-based technical communication
@@ -154,24 +166,27 @@ These files document calculations, evidence boundaries, and the distinction betw
 ```text
 oil-well-807-analysis/
 ├── README.md
+├── requirements.txt
 ├── well_807_analysis.ipynb
 ├── data/
-│   └── well_807_production_data.csv
+│   ├── well_807_production_data.csv
+│   └── raw/well_807_data.csv
 ├── docs/
 │   ├── kpi-reference.md
-│   └── methodology-and-limitations.md
+│   ├── methodology-and-limitations.md
+│   └── well-807-production-analysis-report.pdf
 └── images/
     ├── production_trend.png
-    ├── oil_extraction_per_year.png
+    ├── annual_production_profile.png
     ├── watercut_trend.png
     ├── decline_curve.png
-    └── eor_analysis.png
+    └── intervention_screening.png
 ```
 
 ## How to Run
 
 1. Clone the repository.
-2. Create a Python environment with Pandas, NumPy, Matplotlib, Seaborn, SciPy, Plotly, and Jupyter.
+2. Install the dependencies with `pip install -r requirements.txt`.
 3. Start Jupyter from the repository root.
 4. Open `well_807_analysis.ipynb`.
 5. Run the notebook cells to reproduce the tables and charts.
@@ -191,4 +206,4 @@ Data Analyst | Business Intelligence | Energy & Operations Analytics
 
 ## Project Status
 
-Completed and reproducible. Future development should focus on intervention history, economic-limit modeling, and field-level reservoir context.
+Completed and reproducible. Exact KPIs, chart labels, decline-screening boundaries, and intervention language have been reconciled with the published data.

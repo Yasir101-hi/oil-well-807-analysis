@@ -10,6 +10,7 @@
 | Ending oil rate | Last recorded daily oil volume | 5 m³/day |
 | Oil-rate decline | 1 − ending rate / starting rate | 89.8% |
 | Average oil rate | Mean daily oil volume | 17.62 m³/day |
+| Observed oil volume | Sum of daily oil-volume observations | 51,798 m³ |
 | Starting water cut | First recorded water-cut value | 29% |
 | Ending water cut | Last recorded water-cut value | 70% |
 | Average water cut | Mean daily water cut | 70.69% |
@@ -17,8 +18,11 @@
 | Starting reservoir pressure | First recorded pressure | 214 atm |
 | Ending reservoir pressure | Last recorded pressure | 100 atm |
 | Pressure decline | 1 − ending pressure / starting pressure | 53.3% |
+| Operating-hours utilization | Recorded hours / (observations × 24) | 93.10% |
+| Observations below 24 hours | Daily rows where working hours < 24 | 937 |
 | Zero-oil observations | Days with oil rate equal to zero | 1 |
 | Zero-oil date | Date of the zero-rate observation | 2020-05-11 |
+| Missing calendar dates | Dates absent between the minimum and maximum date | 1 (2015-05-31) |
 
 ## Operational Measures
 
@@ -26,7 +30,7 @@
 |---|---|---|
 | Monthly average oil rate | Mean daily oil rate by calendar month | Smooth short-term volatility |
 | Annual average oil rate | Mean daily oil rate by calendar year | Compare operating phases |
-| Cumulative observed oil | Sum of daily oil-volume values | Historical production proxy |
+| Cumulative observed oil | Sum of daily oil-volume values | Historical observed volume; not reserves |
 | Gas-oil ratio | Gas volume divided by oil volume | Track gas behavior |
 | Water-oil ratio | Water volume divided by oil volume | Track water burden |
 | Pressure depletion | Change in reservoir pressure over time | Assess energy depletion |
@@ -37,7 +41,7 @@
 - A production interruption is an observed event; its cause must not be assigned without operational evidence.
 - High water cut is a screening signal, not proof that a specific EOR technique will succeed.
 - A fitted decline curve is sensitive to the selected period and model.
-- Remaining-reserves estimates in the notebook are illustrative and must not be treated as booked reserves.
+- The notebook does not estimate remaining reserves because the required engineering and economic inputs are not available.
 - Economic-limit decisions require oil price, operating cost, water-disposal cost, intervention cost, and abandonment liability.
 
 ## Reproducibility
