@@ -1,167 +1,107 @@
-# Oil Well #807 Production Performance Analysis
+# Oil Well #807 Production Analysis
 
-An evidence-based Python analysis of daily oil production, water cut, reservoir pressure, gas behavior, operating hours, decline trends, and intervention-screening signals from 2013 to 2021.
+I built this project to connect my petroleum engineering background with the data-analysis skills I have been developing in Python. I used more than eight years of daily operating data to examine how oil production, water cut, reservoir pressure, and operating hours changed over the life of Well #807.
 
 ![Well 807 production performance](images/production_trend.png)
 
-## Executive Snapshot
+## Questions I explored
 
-| KPI | Verified result |
+- How did the oil rate change between 2013 and 2021?
+- How did increasing water production affect the well's performance?
+- Did reservoir-pressure decline follow the reduction in oil rate?
+- How much of the production history was affected by reduced operating hours?
+- What additional information would be needed before recommending an intervention?
+
+## Data source
+
+The analysis uses the publicly available [Oil well dataset on Kaggle](https://www.kaggle.com/datasets/ruslanzalevskikh/oil-well), published by Ruslan Zalevskikh for learning and analysis. The publisher identifies the data as daily operating records for Well No. 807, a 2,400-m well drilled in 2013 in northern Russia.
+
+The original file contains two header rows followed by 2,939 daily observations. I converted the Excel dates to ISO format and normalized the column names. I did not alter the recorded production measurements.
+
+## What I did
+
+1. Checked dates, missing values, duplicates, negative values, and the liquid balance.
+2. Calculated 30-day averages to make the long-term trends easier to see.
+3. Aggregated the daily records into monthly and annual summaries.
+4. Calculated cumulative observed oil, gas-oil ratio, and water-oil ratio.
+5. Compared exponential and hyperbolic curves against the monthly oil-rate history.
+6. Used the operating signals to identify questions for further engineering review.
+
+I used the decline curves only to describe the historical trend. I did not use them to estimate reserves or an economic limit because the dataset does not include costs, intervention history, or the information needed to select a stable forecasting period.
+
+## Main findings
+
+| Measure | Result |
 |---|---:|
-| Analysis period | **2013-01-01 to 2021-01-18** |
-| Daily observations | **2,939** |
-| Oil rate | **49 → 5 m³/day** |
-| Oil-rate decline | **89.8%** |
-| Average oil rate | **17.62 m³/day** |
-| Observed oil volume | **51,798 m³** |
-| Water cut | **29% → 70%** |
-| Average water cut | **70.69%** |
-| Reservoir pressure | **214 → 100 atm** |
-| Pressure decline | **53.3%** |
-| Operating-hours utilization | **93.10%** |
-| Zero-oil observations | **1 day** |
-
-## Technical Decision Context
-
-Mature wells require a combined view of production decline, water burden, reservoir energy, and operating availability. This project evaluates:
-
-- How quickly did the oil rate decline?
-- How did water cut change across the well life?
-- Does reservoir-pressure depletion align with production deterioration?
-- Where do working-hour or zero-rate observations indicate operational disruption?
-- Which optimization, water-control, or EOR questions deserve further engineering study?
-- What additional data is required before making an economic-limit or abandonment decision?
-
-## Dataset
-
-The published dataset contains **2,939 daily records** and nine source fields:
-
-- Date
-- Oil volume
-- Total liquid volume
-- Gas volume
-- Water volume
-- Water cut
-- Working hours
-- Dynamic level
-- Reservoir pressure
-
-The cleaned file is available at [data/well_807_production_data.csv](data/well_807_production_data.csv). Excel serial dates were converted to ISO dates and header formatting was normalized.
-
-## Analytical Workflow
-
-1. Validate dates, data types, ranges, and missing values.
-2. Examine daily, monthly, and yearly production behavior.
-3. Calculate gas-oil ratio, water-oil ratio, and cumulative observed production.
-4. Review oil-rate decline, water-cut progression, pressure depletion, and operating hours.
-5. Reconcile liquid balance and identify calendar or operating exceptions.
-6. Fit exponential and hyperbolic curves for historical screening only.
-7. Prioritize operational and intervention questions within explicit evidence limits.
-
-The reproducible [Jupyter notebook](well_807_analysis.ipynb) uses a repository-relative path and contains no saved outputs; run it locally to recreate the analysis.
-
-A concise [portfolio report](docs/well-807-production-analysis-report.pdf) presents the verified findings, charts, and evidence boundaries in a six-page format.
-
-## Verified Findings
+| Period analyzed | 1 Jan 2013 - 18 Jan 2021 |
+| Daily observations | 2,939 |
+| Oil rate, first to last record | 49 to 5 m³/day |
+| Average oil rate | 17.62 m³/day |
+| Observed oil volume | 51,798 m³ |
+| Water cut, first to last record | 29% to 70% |
+| Reservoir pressure, first to last record | 214 to 100 atm |
+| Recorded-hours utilization | 93.10% |
+| Days with zero recorded oil | 1 |
 
 ### Production decline
 
-- The recorded oil rate declined from **49 m³/day** on the first observation to **5 m³/day** on the last.
-- This represents an **89.8% reduction** across the observed period.
-- Average daily oil rate across the dataset was **17.62 m³/day**.
-- The annual average fell from **36.63 m³/day in 2013** to **7.59 m³/day in 2020**. The 2021 record is partial and covers only 18 days.
-- Summing the daily observations gives **51,798 m³ of observed oil volume**. This is historical observed production, not a reserves estimate.
+The oil rate fell by 89.8% between the first and last observations. The annual average declined from 36.63 m³/day in 2013 to 7.59 m³/day in 2020. I excluded 2021 from that comparison because the dataset contains only 18 days for that year.
 
-### Water burden
+### Water production
 
-- Water cut increased from **29%** to **70%** between the first and final records.
-- Average water cut across all observations was **70.69%**.
-- From 2016 onward, **90.7% of daily observations** recorded water cut at or above 70%.
-- The sustained water burden strengthens the case for water-handling, conformance, and operating-cost review.
+Water cut increased as oil production declined. From 2016 onward, 90.7% of the daily records had water cut at or above 70%. I treated 70% as a convenient reference for reviewing this dataset, not as a universal intervention threshold.
 
-### Reservoir pressure
+### Pressure and operating time
 
-- Reservoir pressure declined from **214 atm** to **100 atm**.
-- The observed reduction was **53.3%**, consistent with material reservoir-energy depletion.
-- Pressure decline and oil-rate deterioration should be interpreted together with intervention and artificial-lift history, which are not included in the dataset.
+Reservoir pressure fell from 214 to 100 atm. This supports a depletion interpretation, but the data alone cannot separate reservoir decline from changes in artificial lift or well operations.
 
-### Operational interruption
+There were 937 observations with fewer than 24 working hours. One record, dated 11 May 2020, showed zero oil production and eight working hours. I flagged the date for investigation rather than assigning a shutdown cause that is not recorded in the dataset.
 
-- Oil production reached **0 m³/day on 2020-05-11**, while eight working hours were recorded.
-- Recorded working hours equal **93.10%** of the theoretical 24-hour daily maximum; 937 observations contain fewer than 24 working hours.
-- The dataset confirms the event but does **not** identify its cause.
-- Maintenance, operating constraints, shutdown activity, or external events require supporting operational records before attribution.
+## Engineering interpretation
 
-### Data quality
+My reading of the available history is that Well #807 is a mature well affected by declining reservoir pressure and a high produced-water burden. Before recommending a workover, water-control treatment, pressure-support project, or abandonment decision, I would want to review:
 
-- Dates are unique and ordered, with one missing calendar date: **2015-05-31**.
-- Oil plus water differs from reported total liquid by only 1 m³/day on 464 rows, consistent with rounded source measurements.
-- No missing, duplicate, or negative source values were found.
+- artificial-lift settings and well-test history;
+- shutdown, failure, and intervention records;
+- completion intervals and water-source diagnostics;
+- offset-well and injection response;
+- PVT and rock data;
+- oil price, lifting cost, water-disposal cost, and intervention cost.
 
-## Visual Analysis
+These additional inputs would allow the production decline to be separated from downtime and would support a proper technical and economic comparison of intervention options.
 
-### Production Performance
+## Results
+
+### Production performance
 
 ![Oil Production Trend](images/production_trend.png)
 
-### Annual Production Profile
+### Annual production profile
 
 ![Annual Production Profile](images/annual_production_profile.png)
 
-### Water Burden
+### Water burden
 
 ![Water Cut Trend](images/watercut_trend.png)
 
-### Decline-Curve Screening
+### Historical decline-curve comparison
 
 ![Decline Curve Analysis](images/decline_curve.png)
 
-### Intervention Review Priorities
+### Questions for intervention review
 
 ![Intervention Review](images/intervention_screening.png)
 
-## Engineering Interpretation
+## Reproduce the analysis
 
-The history is consistent with a mature, depleted well with a high produced-water burden. The evidence supports a structured technical and economic review; it does not independently prove that the well should be abandoned or that a particular EOR method will succeed.
+1. Clone this repository.
+2. Install the packages with `pip install -r requirements.txt`.
+3. Open `well_807_analysis.ipynb`.
+4. Run the cells from the repository root.
 
-Priority review areas include:
+The notebook reads `data/well_807_production_data.csv` and recreates the tables and figures shown above.
 
-1. Artificial-lift and pumping-parameter optimization.
-2. Water-source diagnosis and conformance-control review.
-3. Workover feasibility assessment using intervention history.
-4. Economic-limit analysis including water handling and disposal.
-5. Field-level pressure-support or EOR screening only after adding offset-well and reservoir data.
-6. Abandonment comparison only after estimating remaining value, operating cost, and liability.
-
-## Recommended Next Analysis
-
-- Add failure, shutdown, workover, and intervention records.
-- Separate natural decline from documented downtime.
-- Add price, lifting cost, water-disposal cost, and intervention cost.
-- Test decline models on engineering-selected stable-production periods and documented operating states.
-- Compare the well with field injection and offset-well response.
-- Validate any EOR candidate against rock, fluid, pressure, and simulation data.
-
-## KPI and Methodology Documentation
-
-- [KPI reference](docs/kpi-reference.md)
-- [Methodology and limitations](docs/methodology-and-limitations.md)
-
-These files document calculations, evidence boundaries, and the distinction between observed results and screening assumptions.
-
-## Tools and Skills Demonstrated
-
-- Python and Pandas
-- Matplotlib and Seaborn
-- Time-series analysis
-- Data cleaning and validation
-- Production-performance analysis
-- Decline-curve screening without reserves claims
-- Water-cut and pressure analysis
-- Petroleum-engineering interpretation
-- Evidence-based technical communication
-
-## Repository Structure
+## Repository structure
 
 ```text
 oil-well-807-analysis/
@@ -183,27 +123,12 @@ oil-well-807-analysis/
     └── intervention_screening.png
 ```
 
-## How to Run
-
-1. Clone the repository.
-2. Install the dependencies with `pip install -r requirements.txt`.
-3. Start Jupyter from the repository root.
-4. Open `well_807_analysis.ipynb`.
-5. Run the notebook cells to reproduce the tables and charts.
-
-## Validation Note
-
-All exact figures in this README were recomputed from the published CSV. Decline fits, reserves estimates, economic limits, and EOR suitability remain screening-level outputs until supported by complete engineering and economic data.
-
 ## Author
 
 **Yasir Awad**  
-Data Analyst | Business Intelligence | Energy & Operations Analytics
+Petroleum Engineering Graduate | Energy Data Analytics
 
 - [GitHub](https://github.com/Yasir101-hi)
 - [LinkedIn](https://www.linkedin.com/in/yasirawad)
-- Email: [yasir.petro.analytics@outlook.com](mailto:yasir.petro.analytics@outlook.com)
+- Email: [yasir.m.ahmed10@gmail.com](mailto:yasir.m.ahmed10@gmail.com)
 
-## Project Status
-
-Completed and reproducible. Exact KPIs, chart labels, decline-screening boundaries, and intervention language have been reconciled with the published data.
