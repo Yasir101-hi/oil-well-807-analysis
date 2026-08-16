@@ -130,5 +130,5 @@ Petroleum Engineering Graduate | Energy Data Analytics
 
 - [GitHub](https://github.com/Yasir101-hi)
 - [LinkedIn](https://www.linkedin.com/in/yasirawad)
-- Email: [yasir.m.ahmed10@gmail.com](mailto:yasir.m.ahmed10@gmail.com)
-
+- Academic enquiries: [yasir.m.ahmed10@gmail.com](mailto:yasir.m.ahmed10@gmail.com)
+- Portfolio contact: [yasir.petro.analytics@outlook.com](mailto:yasir.petro.analytics@outlook.com)
